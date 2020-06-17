@@ -2,6 +2,12 @@ description = "Spring TestContext Framework"
 
 apply plugin: "kotlin"
 
+// Workaround for https://youtrack.jetbrains.com/issue/KT-39610
+configurations["optional"].attributes.attribute(
+		org.gradle.api.attributes.Usage.USAGE_ATTRIBUTE,
+		objects.named(Usage.class, "java-runtime")
+)
+
 dependencies {
 	compile(project(":spring-core"))
 	optional(project(":spring-aop"))
@@ -42,6 +48,11 @@ dependencies {
 	optional("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	testCompile(project(":spring-context-support"))
 	testCompile(project(":spring-oxm"))
+	testCompile(testFixtures(project(":spring-beans")))
+	testCompile(testFixtures(project(":spring-context")))
+	testCompile(testFixtures(project(":spring-core")))
+	testCompile(testFixtures(project(":spring-tx")))
+	testCompile(testFixtures(project(":spring-web")))
 	testCompile("javax.annotation:javax.annotation-api")
 	testCompile("javax.cache:cache-api")
 	testCompile("javax.ejb:javax.ejb-api")
